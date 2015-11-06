@@ -64,6 +64,10 @@
       <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.6.1.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Nancy, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nancy.1.4.0\lib\net40\Nancy.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +103,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\sk.jpg" />
+    <Content Include="images\yoda1.jpg" />
+    <Content Include="images\yoda2.jpg" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
