@@ -14,6 +14,7 @@ namespace BryanPorter.SlackMeme.Service
         : Nancy.NancyModule
     {
         const char LineSeperator = '\\';
+        const string HelpQuery = "help";
 
         public ImageModule(IRootPathProvider rootPathProvider)
         {
@@ -56,46 +57,22 @@ namespace BryanPorter.SlackMeme.Service
             {
                 var text = Request.Form.text.HasValue ? Request.Form.text.ToString() : "dwight:Next+time\\say+something";
                 string[] parts = text.Split(':');
-                
+
+                if (string.Compare(text, HelpQuery, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    return Response.AsJson(new Models.HelpResponse());
+                }
+
                 if (parts.Length < 2)
                 {
-                    var result = new
-                    {
-                        text = "Sorry! I don't know what that means.",
-                        attachments = new[]
-                        {
-                            new
-                            {
-                                text =
-                                    "To generate a meme for the current channel, type '/meme <memetype>:<meme text>' and I'll generate and insert the meme for you.\nI know about the following memes:\n   * Success Kid (sk)\n   * All The Things (att)\n   * Dwight Schrute (dwight)\n   * I Don't Always (ida)\n   * Doge (doge)\n"
-                            }
-                        }
-                    };
-
-                    return Response.AsJson(result);
+                    return Response.AsJson(new Models.UnknownResponse());
                 }
 
                 string imageKey = parts[0];
                 string memeText = parts[1];
 
-                var r = new
-                {
-                    response_type = "in_channel",
-                    text = "GENERATE ALL THE MEMES",
-                    attachments =
-                        new[]
-                        {
-                            new
-                            {
-                                image_url =
-                                    string.Format("https://bpslackmeme.azurewebsites.net/image/{0}?text={1}", imageKey,
-                                        Nancy.Helpers.HttpUtility.UrlEncode(memeText)),
-                                title = text
-                            }
-                        }
-                };
-                
-                return Response.AsJson(r, HttpStatusCode.OK);
+
+                return Response.AsJson(new Models.ImageResponse(imageKey, memeText));
             };
         }
 

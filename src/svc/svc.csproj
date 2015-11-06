@@ -76,7 +76,6 @@
   <ItemGroup>
     <Content Include="images\sk.jpg" />
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\bpslackmeme.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -94,6 +93,10 @@
   <ItemGroup>
     <Compile Include="ImageGenerator.cs" />
     <Compile Include="ImageModule.cs" />
+    <Compile Include="Models\BasicResponse.cs" />
+    <Compile Include="Models\HelpResponse.cs" />
+    <Compile Include="Models\ImageResponse.cs" />
+    <Compile Include="Models\UnknownResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>
