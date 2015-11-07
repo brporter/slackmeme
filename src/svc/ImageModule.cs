@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Nancy;
+using Nancy.Responses;
 
 namespace BryanPorter.SlackMeme.Service
 {
@@ -37,6 +38,17 @@ namespace BryanPorter.SlackMeme.Service
                 {
                     topText = text;
                 }
+                
+                var store = new ImageStore();
+                string imageId = string.Format("{0}-{1}-{2}.jpg",
+                    parameters["imageKey"].ToString(),
+                    Nancy.Helpers.HttpUtility.UrlEncode(topText),
+                    Nancy.Helpers.HttpUtility.UrlEncode(bottomText));
+
+                if (store.Exists(imageId))
+                {
+                    return Response.AsRedirect(store.GetUrl(imageId), RedirectResponse.RedirectType.Temporary);
+                }
 
                 var img = ImageGenerator.GetImage(rootPathProvider.GetRootPath(), parameters["imageKey"], topText,
                     bottomText);
@@ -45,6 +57,10 @@ namespace BryanPorter.SlackMeme.Service
                 {
                     var ms = new MemoryStream();
                     img.Save(ms, ImageFormat.Jpeg);
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    store.StoreImage(imageId, ms);
+
                     ms.Seek(0, SeekOrigin.Begin);
 
                     return Response.FromStream(ms, "image/jpeg");
@@ -70,7 +86,6 @@ namespace BryanPorter.SlackMeme.Service
 
                 string imageKey = parts[0];
                 string memeText = parts[1];
-
 
                 return Response.AsJson(new Models.ImageResponse(imageKey, memeText));
             };
