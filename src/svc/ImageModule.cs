@@ -47,7 +47,7 @@ namespace BryanPorter.SlackMeme.Service
 
                 if (store.Exists(imageId))
                 {
-                    return Response.AsRedirect(store.GetUrl(imageId), RedirectResponse.RedirectType.Temporary);
+                    return Response.AsRedirect(store.GetUrl(imageId));
                 }
 
                 var img = ImageGenerator.GetImage(rootPathProvider.GetRootPath(), parameters["imageKey"], topText,
