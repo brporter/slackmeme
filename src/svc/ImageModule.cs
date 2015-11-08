@@ -101,7 +101,7 @@ namespace BryanPorter.SlackMeme.Service
                 }
                 else
                 {
-                    topText = text;
+                    topText = parts[1];
                 }
 
                 var store = new ImageStore();
