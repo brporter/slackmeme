@@ -44,7 +44,6 @@ namespace BryanPorter.SlackMeme.Service
             var topLine = string.Empty;
             var bottomLine = string.Empty;
 
-            var lineSeperatorIndex = input.IndexOf(LineSeperator);
             var preambleSeperatorIndex = input.IndexOf(PreambleSeperator);
             var preamble = input.Substring(0, preambleSeperatorIndex);
             var textStartIndex = preambleSeperatorIndex + 1; // Don't include the seperator itself
@@ -57,6 +56,8 @@ namespace BryanPorter.SlackMeme.Service
                     input.Length - (textStartIndex)
                 );
             }
+
+            var lineSeperatorIndex = input.IndexOf(LineSeperator);
 
             if (lineSeperatorIndex != -1)
             {
