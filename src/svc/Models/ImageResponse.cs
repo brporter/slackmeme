@@ -12,7 +12,7 @@ namespace BryanPorter.SlackMeme.Service.Models
         const string ResponseType = "in_channel";
         const string ResponseText = "GENERATE ALL THE MEMES";
 
-        public ImageResponse(string imageKey, string imageText)
+        public ImageResponse(string imageUrl, string imageText)
         {
             base.response_type = ResponseType;
             base.text = ResponseText;
@@ -21,8 +21,7 @@ namespace BryanPorter.SlackMeme.Service.Models
             {
                 new BasicAttachment()
                 {
-                    image_url = string.Format("https://bpslackmeme.azurewebsites.net/image/{0}?text={1}", imageKey,
-                        Nancy.Helpers.HttpUtility.UrlEncode(imageText)),
+                    image_url = imageUrl,
                     title = imageText
                 }
             };
