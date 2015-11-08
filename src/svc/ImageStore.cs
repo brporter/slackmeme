@@ -10,29 +10,28 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace BryanPorter.SlackMeme.Service
 {
-    public class ImageStore
+    public class ImageStore 
+        : IBlobStore
     {
         const string ContainerName = "memes";
         const string DevConnectionString = "UseDevelopmentStorage=true";
 
-        readonly CloudStorageAccount _account;
+        static readonly CloudStorageAccount Account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
         readonly CloudBlobClient _client;
         readonly CloudBlobContainer _container;
-        readonly bool _failedInitialization = true;
 
         public ImageStore()
         {
-            _account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            _client = _account.CreateCloudBlobClient();
+            _client = Account.CreateCloudBlobClient();
             _container = _client.GetContainerReference(ContainerName);
 
             _container.CreateIfNotExists(BlobContainerPublicAccessType.Blob);
         }
 
-        public string GetUrl(string imageIdentifier)
+        public Uri GetUri(string imageIdentifier)
         {
             var blob = _container.GetBlockBlobReference(imageIdentifier);
-            return blob.Uri.ToString();
+            return blob.Uri;
         }
 
         public bool Exists(string imageIdentifier)
@@ -41,7 +40,7 @@ namespace BryanPorter.SlackMeme.Service
             return blob.Exists();
         }
 
-        public void StoreImage(string imageIdentifier, Stream imageStream)
+        public void Store(string imageIdentifier, Stream imageStream)
         {
             var blob = _container.GetBlockBlobReference(imageIdentifier);
 
@@ -49,6 +48,12 @@ namespace BryanPorter.SlackMeme.Service
             {
                 blob.UploadFromStream(imageStream);
             }
+        }
+
+        public void Delete(string imageIdentifier)
+        {
+            var blob = _container.GetBlockBlobReference(imageIdentifier);
+            blob.DeleteIfExists(DeleteSnapshotsOption.IncludeSnapshots);
         }
     }
 }
