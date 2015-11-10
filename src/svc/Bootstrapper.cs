@@ -21,6 +21,8 @@ namespace BryanPorter.SlackMeme.Service
         protected override void ConfigureRequestContainer(IKernel container, NancyContext context)
         {
             container.Bind<IBlobStore>().To<ImageStore>();
+            container.Bind<IImageGenerator>().To<ImageGenerator>();
+            container.Bind<IImageProvider>().To<ImageProvider>();
         }
     }
 }

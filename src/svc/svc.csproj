@@ -140,8 +140,10 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="IBlobStore.cs" />
+    <Compile Include="IImageProvider.cs" />
     <Compile Include="ImageGenerator.cs" />
     <Compile Include="ImageModule.cs" />
+    <Compile Include="ImageProvider.cs" />
     <Compile Include="ImageStore.cs" />
     <Compile Include="Models\BasicResponse.cs" />
     <Compile Include="Models\Command.cs" />

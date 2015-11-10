@@ -18,7 +18,7 @@ namespace BryanPorter.SlackMeme.Service
         static readonly UnknownResponse UnknownResponse = new UnknownResponse();
         static readonly HelpResponse HelpResponse = new HelpResponse();
 
-        public ImageModule(IRootPathProvider rootPathProvider, ICommandParser commandParser, IBlobStore store)
+        public ImageModule(IRootPathProvider rootPathProvider, ICommandParser commandParser, IBlobStore store, IImageGenerator imageGenerator)
         {
             Post["/image/"] = _ =>
             {
@@ -43,11 +43,7 @@ namespace BryanPorter.SlackMeme.Service
 
                 if (!store.Exists(imageId))
                 {
-                    var img = ImageGenerator.GetImage(
-                        rootPathProvider.GetRootPath(), 
-                        c.Preamble, 
-                        c.TopLine,
-                        c.BottomLine);
+                    var img = imageGenerator.GenerateImage(c.Preamble, c.TopLine, c.BottomLine);
 
                     if (img != null)
                     {
@@ -65,14 +61,6 @@ namespace BryanPorter.SlackMeme.Service
                     new Models.ImageResponse(store.GetUri(imageId).ToString(), 
                     string.Format("{0} {1}", c.TopLine, c.BottomLine)));
             };
-        }
-
-        private IEnumerable<string> GetImageKeys(string rootPath)
-        {
-            var imagesPath = Path.Combine(rootPath, "images");
-            var images = Directory.GetFiles(imagesPath, "*.jpg");
-
-            return images.Select(Path.GetFileNameWithoutExtension);
         }
     }
 }
