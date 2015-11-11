@@ -20,7 +20,7 @@ namespace BryanPorter.SlackMeme.Service
 
     public class ImageGenerator : IImageGenerator
     {
-        const int StartingFontSize = 24;
+        const int StartingFontSize = 16;
         const int FontSizeIncrement = 8;
 
         readonly static StringFormat TopFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
