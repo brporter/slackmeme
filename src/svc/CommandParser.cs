@@ -90,7 +90,7 @@ namespace BryanPorter.SlackMeme.Service
             {
                 switch (c)
                 {
-                    case '\'': literal.Append(@"\'"); break;
+                    //case '\'': literal.Append(@"\'"); break;
                     case '\"': literal.Append("\\\""); break;
                     //case '\\': literal.Append(@"\\"); break;
                     case '\0': literal.Append(@"\0"); break;

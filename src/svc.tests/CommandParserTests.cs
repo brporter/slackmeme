@@ -22,6 +22,7 @@ namespace BryanPorter.SlackMeme.Service.Tests
         [InlineData("preamble:\\line 2", "preamble", EmptyString, "line 2", true)]
         [InlineData("preamble:\nline 2", "preamble", EmptyString, "nline 2", true)]
         [InlineData("preamble:\bline 2", "preamble", EmptyString, "bline 2", true)]
+        [InlineData("preamble:that's the sound of an alarm\no going off", "preamble", "that's the sound of an alarm", "no going off", true)]
         public void PreambleTwoLineTest(string input, string expectedPreamble, string expectedTopLine, string expectedBottomLine, bool expectedResult)
         {
             var parser = new CommandParser();
@@ -30,10 +31,17 @@ namespace BryanPorter.SlackMeme.Service.Tests
             var result = parser.TryParse(input, out c);
 
             Assert.True(result == expectedResult);
-            Assert.NotNull(c);
-            Assert.Equal(c.Preamble, expectedPreamble, StringComparer.OrdinalIgnoreCase);
-            Assert.Equal(c.TopLine, expectedTopLine, StringComparer.OrdinalIgnoreCase);
-            Assert.Equal(c.BottomLine, expectedBottomLine, StringComparer.OrdinalIgnoreCase);
+
+            if (result)
+            {
+                Assert.NotNull(c);
+
+                Assert.Equal(c.Preamble, expectedPreamble, StringComparer.OrdinalIgnoreCase);
+                Assert.Equal(c.TopLine, expectedTopLine, StringComparer.OrdinalIgnoreCase);
+                Assert.Equal(c.BottomLine, expectedBottomLine, StringComparer.OrdinalIgnoreCase);
+            }
+            else
+                Assert.Null(c);
         }
     }
 }
