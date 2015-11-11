@@ -16,7 +16,8 @@ namespace BryanPorter.SlackMeme.Service
         bool TryParse(string input, out Command parsedCommand);
     }
 
-    public class CommandParser : ICommandParser
+    public class CommandParser 
+        : ICommandParser
     {
         const char PreambleSeperator = ':';
         const char LineSeperator = '\\';
@@ -59,14 +60,10 @@ namespace BryanPorter.SlackMeme.Service
                     textStartIndex,
                     input.Length - (textStartIndex)
                     );
-
-                // There may not be a second line; assign
-                // text block to topLine
-                topLine = text;
             }
 
             var literal = text.ToLiteral();
-            var lines = literal.Split(new[] { LineSeperator }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = literal.Split(new[] { LineSeperator });
 
             topLine = lines.Length >= 1 ? lines[0] : string.Empty;
             bottomLine = lines.Length == 2 ? lines[1] : lines.Length > 2 ? string.Join("\\", lines.Skip(1)) : string.Empty;
@@ -95,7 +92,7 @@ namespace BryanPorter.SlackMeme.Service
                 {
                     case '\'': literal.Append(@"\'"); break;
                     case '\"': literal.Append("\\\""); break;
-                    case '\\': literal.Append(@"\\"); break;
+                    //case '\\': literal.Append(@"\\"); break;
                     case '\0': literal.Append(@"\0"); break;
                     case '\a': literal.Append(@"\a"); break;
                     case '\b': literal.Append(@"\b"); break;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BryanPorter.SlackMeme.Service.Tests
 {
-    class ImageGeneratorTests
+    public class ImageGeneratorTests
     {
     }
 }
