@@ -76,18 +76,13 @@ namespace BryanPorter.SlackMeme.Service
 
             const int MaxFontSize = 72;
             const int MinFontSize = 8;
-            const int MedFontSize = (MaxFontSize - MinFontSize) / 2;
             const int FontSizeAdjustmentInterval = 8;
 
             float idealFontSize = 0;
 
             using (var g = Graphics.FromImage(image))
             {
-                var adjustmentModifier = 1;
-
-                for (int testFontSize = MedFontSize;
-                    testFontSize >= MinFontSize && testFontSize <= MaxFontSize;
-                    testFontSize += (adjustmentModifier*FontSizeAdjustmentInterval))
+                for (int testFontSize = MinFontSize; testFontSize <= MaxFontSize; testFontSize += FontSizeAdjustmentInterval)
                 {
                     var testFont = new Font(FontFamily.GenericSansSerif, testFontSize, FontStyle.Bold);
 
@@ -102,11 +97,6 @@ namespace BryanPorter.SlackMeme.Service
                     {
                         break;
                     }
-
-                    adjustmentModifier = testSize.Height > boundingRectangle.Size.Height ||
-                                         testSize.Width > boundingRectangle.Size.Width
-                        ? -1
-                        : 1;
                 }
             }
 

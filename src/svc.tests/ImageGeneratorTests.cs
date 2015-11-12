@@ -13,7 +13,7 @@ namespace BryanPorter.SlackMeme.Service.Tests
     public class ImageGeneratorTests
     {
         [Fact]
-        public void CalculateOptimumFontSizeTest()
+        public void CalculateOptimumFontSizeScaleTest()
         {
             var img = new Bitmap(400, 400);
             var rect = new RectangleF(0, 0, 400, 200);
