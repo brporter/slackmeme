@@ -77,7 +77,7 @@ namespace BryanPorter.SlackMeme.Service
             if (string.IsNullOrWhiteSpace(text))
                 return StartingFontSize;
 
-            const int MaxFontSize = 98;
+            const int MaxFontSize = 128;
             const int MinFontSize = 16;
             const int FontSizeAdjustmentInterval = 8;
 
