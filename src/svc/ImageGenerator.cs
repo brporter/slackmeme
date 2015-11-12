@@ -74,37 +74,43 @@ namespace BryanPorter.SlackMeme.Service
             if (string.IsNullOrWhiteSpace(text))
                 return StartingFontSize;
 
-            Font font = null;
-            var size = SizeF.Empty;
-            var safetyLoopCounter = (uint) 0;
+            const int MaxFontSize = 72;
+            const int MinFontSize = 8;
+            const int MedFontSize = (MaxFontSize - MinFontSize) / 2;
+            const int FontSizeAdjustmentInterval = 8;
+
+            float idealFontSize = 0;
 
             using (var g = Graphics.FromImage(image))
             {
+                var adjustmentModifier = 1;
 
-                while (safetyLoopCounter < 40)
+                for (int testFontSize = MedFontSize;
+                    testFontSize >= MinFontSize && testFontSize <= MaxFontSize;
+                    testFontSize += (adjustmentModifier*FontSizeAdjustmentInterval))
                 {
-                    safetyLoopCounter++;
+                    var testFont = new Font(FontFamily.GenericSansSerif, testFontSize, FontStyle.Bold);
 
-                    font = font == null
-                        ? new Font(FontFamily.GenericSansSerif, StartingFontSize, FontStyle.Bold)
-                        : new Font(FontFamily.GenericSansSerif, font.Size + FontSizeIncrement, FontStyle.Bold);
+                    var testSize = g.MeasureString(text, testFont, boundingRectangle.Size, format);
 
-                    var testSize = g.MeasureString(text, font, boundingRectangle.Size, format);
-
-                    if (size.Height < boundingRectangle.Size.Height &&
-                        size.Width < boundingRectangle.Size.Width)
+                    if (testSize.Height < boundingRectangle.Size.Height &&
+                        testSize.Width < boundingRectangle.Size.Width)
                     {
-                        size = testSize;
+                        idealFontSize = testFont.Size;
                     }
                     else
                     {
-                        // We've exceeded bounds, back it out.
                         break;
                     }
+
+                    adjustmentModifier = testSize.Height > boundingRectangle.Size.Height ||
+                                         testSize.Width > boundingRectangle.Size.Width
+                        ? -1
+                        : 1;
                 }
             }
 
-            return font.Size;
+            return idealFontSize;
         }
 
         private static void DrawString(Graphics g, string text, RectangleF rectangle, StringFormat format)
