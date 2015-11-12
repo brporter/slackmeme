@@ -50,14 +50,17 @@ namespace BryanPorter.SlackMeme.Service
                 var topRectangle = new RectangleF(0, 0, img.Width, img.Height/2);
                 var bottomRectangle = new RectangleF(0, img.Height/2, img.Width, img.Height/2);
 
-                var topSize = CalculateOptimumFontSize(img, topRectangle, TopFormat, topText);
-                var btmSize = CalculateOptimumFontSize(img, bottomRectangle, BtmFormat, bottomText);
+                var upperTopText = topText.ToUpper();
+                var upperBottomText = bottomText.ToUpper();
+
+                var topSize = CalculateOptimumFontSize(img, topRectangle, TopFormat, upperTopText);
+                var btmSize = CalculateOptimumFontSize(img, bottomRectangle, BtmFormat, upperBottomText);
                 
                 var path = new GraphicsPath();
 
-                path.AddString(topText, FontFamily.GenericSansSerif, (int) FontStyle.Bold, topSize, topRectangle,
+                path.AddString(upperTopText, FontFamily.GenericSansSerif, (int) FontStyle.Bold, topSize, topRectangle,
                     TopFormat);
-                path.AddString(bottomText, FontFamily.GenericSansSerif, (int) FontStyle.Bold, btmSize, bottomRectangle,
+                path.AddString(upperBottomText, FontFamily.GenericSansSerif, (int) FontStyle.Bold, btmSize, bottomRectangle,
                     BtmFormat);
 
                 g.DrawPath(Pens.Black, path);
@@ -74,8 +77,8 @@ namespace BryanPorter.SlackMeme.Service
             if (string.IsNullOrWhiteSpace(text))
                 return StartingFontSize;
 
-            const int MaxFontSize = 72;
-            const int MinFontSize = 8;
+            const int MaxFontSize = 98;
+            const int MinFontSize = 16;
             const int FontSizeAdjustmentInterval = 8;
 
             float idealFontSize = 0;
