@@ -15,6 +15,8 @@ namespace BryanPorter.SlackMeme.Service.Tests
         [Fact]
         public void CalculateOptimumFontSizeScaleTest()
         {
+            const string text = "this is a test of a long string";
+
             var img = new Bitmap(400, 400);
             var rect = new RectangleF(0, 0, 400, 200);
             var fmt = new StringFormat()
@@ -23,12 +25,10 @@ namespace BryanPorter.SlackMeme.Service.Tests
                 LineAlignment = StringAlignment.Near
             };
 
-            var text = "this is a test of a long string";
-
             var generator = new ImageGenerator(null);
             var result = generator.CalculateOptimumFontSize(img, rect, fmt, text);
 
-            Assert.Equal(result, 40);
+            Assert.Equal(40, result);
         }
     }
 }

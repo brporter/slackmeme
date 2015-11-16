@@ -32,17 +32,17 @@ namespace BryanPorter.SlackMeme.Service
                 return false;
             }
 
-            if (input.IndexOf(':') == -1)
-            {
-                // No preamble specified at all. Early return.
-                return false;
-            }
-
             if (string.Compare(input, Command.HelpConstant, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 // Help request. Early return.
                 parsedCommand = Command.HelpCommand;
                 return true;
+            }
+
+            if (input.IndexOf(':') == -1)
+            {
+                // No preamble specified at all. Early return.
+                return false;
             }
 
             var text = string.Empty;

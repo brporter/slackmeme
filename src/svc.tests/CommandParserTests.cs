@@ -14,11 +14,20 @@ namespace BryanPorter.SlackMeme.Service.Tests
 
         [Theory]
         [InlineData(null, null, null, null, false)]
+        [InlineData("foo", null, null, null, false)]
+        [InlineData(Command.HelpConstant, Command.HelpConstant, null, null, true)]
         [InlineData("preamble:", "preamble", EmptyString, EmptyString, true)]
         [InlineData("preamble:line 1", "preamble", "line 1", EmptyString, true)]
         [InlineData("preamble:line 1\\line 2", "preamble", "line 1", "line 2", true)]
         [InlineData("preamble:line 1\nline 2", "preamble", "line 1", "nline 2", true)]
         [InlineData("preamble:line 1\bline 2", "preamble", "line 1", "bline 2", true)]
+        [InlineData("preamble:line 1\"line 2", "preamble", "line 1", "\"line 2", true)]
+        [InlineData("preamble:line 1\0line 2", "preamble", "line 1", "0line 2", true)]
+        [InlineData("preamble:line 1\aline 2", "preamble", "line 1", "aline 2", true)]
+        [InlineData("preamble:line 1\fline 2", "preamble", "line 1", "fline 2", true)]
+        [InlineData("preamble:line 1\rline 2", "preamble", "line 1", "rline 2", true)]
+        [InlineData("preamble:line 1\tline 2", "preamble", "line 1", "tline 2", true)]
+        [InlineData("preamble:line 1\vline 2", "preamble", "line 1", "vline 2", true)]
         [InlineData("preamble:\\line 2", "preamble", EmptyString, "line 2", true)]
         [InlineData("preamble:\nline 2", "preamble", EmptyString, "nline 2", true)]
         [InlineData("preamble:\bline 2", "preamble", EmptyString, "bline 2", true)]
@@ -36,9 +45,9 @@ namespace BryanPorter.SlackMeme.Service.Tests
             {
                 Assert.NotNull(c);
 
-                Assert.Equal(c.Preamble, expectedPreamble, StringComparer.OrdinalIgnoreCase);
-                Assert.Equal(c.TopLine, expectedTopLine, StringComparer.OrdinalIgnoreCase);
-                Assert.Equal(c.BottomLine, expectedBottomLine, StringComparer.OrdinalIgnoreCase);
+                Assert.Equal(expectedPreamble, c.Preamble,StringComparer.OrdinalIgnoreCase);
+                Assert.Equal(expectedTopLine, c.TopLine, StringComparer.OrdinalIgnoreCase);
+                Assert.Equal(expectedBottomLine, c.BottomLine, StringComparer.OrdinalIgnoreCase);
             }
             else
                 Assert.Null(c);

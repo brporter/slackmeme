@@ -12,17 +12,9 @@ using System.Threading.Tasks;
 namespace BryanPorter.SlackMeme.Service
 {
     // Generates our meme images
-    public interface IImageGenerator
-    {
-        Image GenerateImage(string imageKey, string topText, string bottomText);
-        float CalculateOptimumFontSize(Image image, RectangleF boundingRectangle, StringFormat format, string text);
-    }
 
     public class ImageGenerator : IImageGenerator
     {
-        const int StartingFontSize = 16;
-        const int FontSizeIncrement = 8;
-
         readonly static StringFormat TopFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
         readonly static StringFormat BtmFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far };
 
@@ -74,18 +66,18 @@ namespace BryanPorter.SlackMeme.Service
 
         public float CalculateOptimumFontSize(Image image, RectangleF boundingRectangle, StringFormat format, string text)
         {
-            if (string.IsNullOrWhiteSpace(text))
-                return StartingFontSize;
+            const int maxFontSize = 128;
+            const int minFontSize = 16;
+            const int fontSizeAdjustmentInterval = 8;
 
-            const int MaxFontSize = 128;
-            const int MinFontSize = 16;
-            const int FontSizeAdjustmentInterval = 8;
+            if (string.IsNullOrWhiteSpace(text))
+                return minFontSize;
 
             float idealFontSize = 0;
 
             using (var g = Graphics.FromImage(image))
             {
-                for (int testFontSize = MinFontSize; testFontSize <= MaxFontSize; testFontSize += FontSizeAdjustmentInterval)
+                for (var testFontSize = minFontSize; testFontSize <= maxFontSize; testFontSize += fontSizeAdjustmentInterval)
                 {
                     var testFont = new Font(FontFamily.GenericSansSerif, testFontSize, FontStyle.Bold);
 
@@ -104,44 +96,6 @@ namespace BryanPorter.SlackMeme.Service
             }
 
             return idealFontSize;
-        }
-
-        private static void DrawString(Graphics g, string text, RectangleF rectangle, StringFormat format)
-        {
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                SizeF size = SizeF.Empty;
-                Font font = null;
-
-                uint safetyLoopCounter = 0;
-
-                while (safetyLoopCounter < 40)
-                {
-                    safetyLoopCounter++;
-
-                    font = font == null
-                        ? new Font(FontFamily.GenericSansSerif, StartingFontSize, FontStyle.Bold)
-                        : new Font(FontFamily.GenericSansSerif, font.Size + FontSizeIncrement, FontStyle.Bold);
-
-                    var testSize = g.MeasureString(text, font, rectangle.Size, format);
-
-                    if (size.Height < rectangle.Size.Height &&
-                        size.Width < rectangle.Size.Width)
-                    {
-                        size = testSize;
-                    }
-                    else
-                    {
-                        // We've exceeded bounds, back it out.
-                        break;
-                    }
-                }
-
-                var path = new GraphicsPath();
-                path.AddString(text, FontFamily.GenericSansSerif, (int)FontStyle.Bold, font.Size, rectangle, format);
-                g.DrawPath(Pens.Black, path);
-                g.FillPath(Brushes.White, path);
-            }
         }
     }
 }

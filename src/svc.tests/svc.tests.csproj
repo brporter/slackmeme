@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="CommandParserTests.cs" />
     <Compile Include="ImageGeneratorTests.cs" />
+    <Compile Include="ImageModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
