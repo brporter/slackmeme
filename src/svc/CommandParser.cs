@@ -65,7 +65,7 @@ namespace BryanPorter.SlackMeme.Service
             var literal = text.ToLiteral();
             var lines = literal.Split(new[] { LineSeperator });
 
-            topLine = lines.Length >= 1 ? lines[0] : string.Empty;
+            topLine = lines[0];
             bottomLine = lines.Length == 2 ? lines[1] : lines.Length > 2 ? string.Join("\\", lines.Skip(1)) : string.Empty;
 
             parsedCommand = new Command(preamble, topLine, bottomLine);
