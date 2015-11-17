@@ -75,9 +75,11 @@
     <Compile Include="CommandParserTests.cs" />
     <Compile Include="ImageGeneratorTests.cs" />
     <Compile Include="ImageModuleTests.cs" />
+    <Compile Include="Mocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

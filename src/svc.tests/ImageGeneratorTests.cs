@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
@@ -74,32 +71,6 @@ namespace BryanPorter.SlackMeme.Service.Tests
             var img = g.GenerateImage(null, null, null);
 
             Assert.Null(img);
-        }
-
-        private class MockedImageProvider
-            : IImageProvider
-        {
-            const string ImageKey = "reference";
-
-            public Image GetImage(string imageKey)
-            {
-                if (string.Compare(ImageKey, imageKey, StringComparison.OrdinalIgnoreCase) != 0)
-                {
-                    return null;
-                }
-
-                using (var strm =
-                    Assembly.GetExecutingAssembly()
-                        .GetManifestResourceStream("BryanPorter.SlackMeme.Service.Tests.Resources.reference.jpg"))
-                {
-                    return Image.FromStream(strm);
-                }
-            }
-
-            public IEnumerable<string> GetImageKeys()
-            {
-                yield return ImageKey;
-            }
         }
     }
 }
