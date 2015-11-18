@@ -55,6 +55,11 @@ namespace BryanPorter.SlackMeme.Service
                             store.Store(imageId, ms);
                         }
                     }
+                    else
+                    {
+                        // We failed to generate an image; send unknown response
+                        return Response.AsJson(new Models.UnknownResponse());
+                    }
                 }
 
                 return Response.AsJson(

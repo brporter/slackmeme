@@ -19,6 +19,13 @@ namespace BryanPorter.SlackMeme.Service.Tests
     public class MockedImageStore
         : IBlobStore
     {
+        readonly string _validIdentifier;
+
+        public MockedImageStore(string validIdentifier)
+        {
+            _validIdentifier = validIdentifier;
+        }
+
         public Uri GetUri(string identifier)
         {
             return new Uri(string.Format("http://localhost/images/{0}.jpg", identifier));
@@ -26,7 +33,7 @@ namespace BryanPorter.SlackMeme.Service.Tests
 
         public bool Exists(string identifier)
         {
-            return true;
+            return string.Compare(_validIdentifier, identifier, StringComparison.OrdinalIgnoreCase) == 0;
         }
 
         public void Store(string identifier, Stream stream)
