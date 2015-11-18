@@ -1,0 +1,8 @@
+language: csharp
+solution: src/slackmeme.sln
+install:
+  - nuget restore src/slackmeme.sln
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release src/slackmeme.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./svc.tests/bin/Release/BryanPorter.SlackMeme.Service.Tests.dll
