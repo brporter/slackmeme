@@ -1,8 +1,5 @@
-# slackmeme
-This is a meme generator for Slack. 
-
-## This is probably awful.
-It implements a command web hook for accepting commands from Slack, parsing the input text and generating one of several meme images in response. These images are stored, and a URL returned in a JSON message back to Slack.
+# This is probably awful.
+This is a meme generator for Slack. It implements a command web hook for accepting commands from Slack, parsing the input textd generating one of several meme images in response. These images are stored, and a URL returned in a JSON message back to Slack.
 
 ## Hey, it has tests. Well sort of.
 The test library is mostly incomplete. This was hacked together in a couple of hours, and since then I've been using it as an excuse to play with things I don't normally get to fool with at work (Nancy, xUnit, etc.)
