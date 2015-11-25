@@ -134,6 +134,7 @@
     <Content Include="images\doge.jpg" />
     <Content Include="images\dwight.jpg" />
     <Content Include="images\ida.jpg" />
+    <Content Include="images\plot.jpg" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
